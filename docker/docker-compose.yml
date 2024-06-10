@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ../
+      dockerfile: ./docker/backend/Dockerfile
+    image: ${BE_REGISTRY_ADDRESS}:${BE_TAG}
+    container_name: velour_be
+    depends_on:
+      database:
+        condition: service_healthy
+    ports: [ '8000:8000' ]
+    env_file: ./env/.env.backend
+    command: sh -c "npm run start:dev"
+    volumes:
+      - ../:/app
+      - /app/node_modules
+
+  database:
+    image: mysql:8.0.31
+    container_name: db
+    restart: unless-stopped
+    env_file: ./env/.env.database
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 72
+    command: --default-authentication-plugin=mysql_native_password --skip-log-bin --disable-log-bin
+    volumes:
+      - ~/docker-volumes/velour/db:/var/lib/mysql
+    ports: [ '3306:3306' ]
