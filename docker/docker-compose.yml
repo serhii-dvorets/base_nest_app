@@ -6,7 +6,7 @@ services:
       context: ../
       dockerfile: ./docker/backend/Dockerfile
     image: ${BE_REGISTRY_ADDRESS}:${BE_TAG}
-    container_name: velour_be
+    container_name: base_nest_be
     depends_on:
       database:
         condition: service_healthy
@@ -29,5 +29,5 @@ services:
       retries: 72
     command: --default-authentication-plugin=mysql_native_password --skip-log-bin --disable-log-bin
     volumes:
-      - ~/docker-volumes/velour/db:/var/lib/mysql
+      - ~/docker-volumes/base_nest/db:/var/lib/mysql
     ports: [ '3306:3306' ]
