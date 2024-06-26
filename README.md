@@ -11,3 +11,7 @@
     cp .env.defaults docker/env/.env.backend
     cp docker/env/.env.defaults.database docker/env/.env.database
     ```
+
+## Generate migration file inside docker container
+
+  docker exec -it base_nest_be env name=<migration file name> npm run migration:generate 
