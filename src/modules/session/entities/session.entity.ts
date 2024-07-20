@@ -4,7 +4,7 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity('sessions')
@@ -13,7 +13,7 @@ export class Session implements ISession {
   @Column('bigint')
   expiredAt: number;
 
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: string;
 
   @Column()

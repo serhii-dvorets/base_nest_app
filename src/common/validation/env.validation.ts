@@ -38,6 +38,21 @@ class EnvironmentVariables {
 
   @IsString()
   DB_DATABASE: string;
+
+  @IsString()
+  PROJECT_NAME: string;
+
+  @IsString()
+  SESSION_SECRET: string;
+
+  @IsNumber()
+  SESSION_EXPIRES: number;
+
+  @IsString()
+  PASSWORD_SALT: string;
+
+  @IsNumber()
+  PASSWORD_HASH_LENGTH: number;
 }
 
 export function validateConfig(configuration: Record<string, unknown>) {

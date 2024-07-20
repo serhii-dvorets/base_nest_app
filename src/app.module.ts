@@ -10,6 +10,7 @@ import { NestSessionOptions, SessionModule } from 'nestjs-session';
 import { DataSource } from 'typeorm';
 import { TypeormStore } from 'connect-typeorm';
 import { Session } from './modules/session/entities/session.entity';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -34,11 +35,13 @@ import { Session } from './modules/session/entities/session.entity';
           ...configService.get('session'),
           store: new TypeormStore({
             cleanupLimit: 2,
+            limitSubquery: false,
           }).connect(dataSource.getRepository(Session)),
         },
       }),
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
