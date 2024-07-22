@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { SignInDto } from './dto/sign-in.dto';
 import { User } from '../user/entities/user.entity';
 import { UserRepository } from '../user/repositories/user.repository';
@@ -46,8 +46,7 @@ export class AuthService {
     });
 
     if (!user) {
-      return 'User not found';
-      // TODO throw exception
+      throw new BadRequestException('User not found');
     }
 
     const passwordIsValid = await this.checkPassword(
@@ -56,8 +55,7 @@ export class AuthService {
     );
 
     if (!passwordIsValid) {
-      return 'Password is not correct';
-      // TODO throw exception
+      throw new BadRequestException('Password is not correct');
     }
 
     session.user = { id: user.id };
