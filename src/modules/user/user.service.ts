@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './repositories/user.repository';
+import { FindManyOptions, FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -10,12 +11,12 @@ export class UserService {
     return this.userRepository.create(createUserDto);
   }
 
-  findAll() {
-    return this.userRepository.findAll({});
+  findAll(params: FindManyOptions) {
+    return this.userRepository.findAll(params);
   }
 
-  findOne(id: number) {
-    return this.userRepository.findOne({ where: { id } });
+  findOne(params: FindOneOptions) {
+    return this.userRepository.findOne(params);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

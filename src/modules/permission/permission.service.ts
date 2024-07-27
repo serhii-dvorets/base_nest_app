@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { PermissionRepository } from './repositories/permission.repository';
+import { FindManyOptions, FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class PermissionService {
@@ -10,12 +11,12 @@ export class PermissionService {
     return this.permissionRepository.create(createPermissionDto);
   }
 
-  findAll() {
-    return this.permissionRepository.findAll({});
+  findAll(params: FindManyOptions) {
+    return this.permissionRepository.findAll(params);
   }
 
-  findOne(id: number) {
-    return this.permissionRepository.findOne({ where: { id } });
+  findOne(params: FindOneOptions) {
+    return this.permissionRepository.findOne(params);
   }
 
   update(id: number, updatePermissionDto: UpdatePermissionDto) {

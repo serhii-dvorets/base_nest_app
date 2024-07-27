@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { RoleRepository } from './repositories/role.repository';
+import { FindManyOptions, FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class RoleService {
@@ -10,12 +11,12 @@ export class RoleService {
     return this.roleRepository.create(createRoleDto);
   }
 
-  findAll() {
-    return this.roleRepository.findAll({});
+  findAll(params: FindManyOptions) {
+    return this.roleRepository.findAll(params);
   }
 
-  findOne(id: number) {
-    return this.roleRepository.findOne({ where: { id } });
+  findOne(params: FindOneOptions) {
+    return this.roleRepository.findOne(params);
   }
 
   update(id: number, updateRoleDto: UpdateRoleDto) {

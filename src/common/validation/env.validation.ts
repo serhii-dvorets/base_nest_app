@@ -53,6 +53,15 @@ class EnvironmentVariables {
 
   @IsNumber()
   PASSWORD_HASH_LENGTH: number;
+
+  @IsString()
+  SUPERADMIN_USERNAME: string;
+
+  @IsString()
+  SUPERADMIN_EMAIL: string;
+
+  @IsString()
+  SUPERADMIN_PASSWORD: string;
 }
 
 export function validateConfig(configuration: Record<string, unknown>) {
