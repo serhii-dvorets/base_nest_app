@@ -11,6 +11,8 @@ import { DataSource } from 'typeorm';
 import { TypeormStore } from 'connect-typeorm';
 import { Session } from './modules/session/entities/session.entity';
 import { AuthModule } from './modules/auth/auth.module';
+import { RoleModule } from './modules/role/role.module';
+import { PermissionModule } from './modules/permission/permission.module';
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    RoleModule,
+    PermissionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
