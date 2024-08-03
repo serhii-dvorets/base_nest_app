@@ -5,12 +5,14 @@ import { UserRepository } from '../user/repositories/user.repository';
 import { ConfigService } from '@nestjs/config';
 import { scryptSync } from 'crypto';
 import { LogInDto } from './dto/log-in.dto';
+import { RoleService } from '../role/role.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
+    private readonly roleService: RoleService,
   ) {}
   async signIn(
     session: Record<string, any>,
@@ -18,9 +20,14 @@ export class AuthService {
   ): Promise<{ user: User }> {
     const hashPassword = this.hashPassword(data.password);
 
+    const userRole = await this.roleService.findOne({
+      where: { name: 'user' },
+    });
+
     const user = await this.userRepository.create({
       ...data,
       password: hashPassword,
+      role: userRole,
     });
 
     session.user = { id: user.id };

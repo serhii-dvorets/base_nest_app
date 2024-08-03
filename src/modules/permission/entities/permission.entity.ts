@@ -1,6 +1,13 @@
 import { Role } from 'src/modules/role/entities/role.entity';
-import { Column, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
+@Entity()
 export class Permission {
   @PrimaryGeneratedColumn()
   id: number;

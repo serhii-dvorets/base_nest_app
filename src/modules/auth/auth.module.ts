@@ -7,14 +7,19 @@ import { ConfigService } from '@nestjs/config';
 import { UserRepository } from '../user/repositories/user.repository';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { RoleService } from '../role/role.service';
+import { RoleRepository } from '../role/repositories/role.repository';
+import { Role } from '../role/entities/role.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User, Role])],
   controllers: [AuthController],
   providers: [
     AuthService,
     ConfigService,
     UserRepository,
+    RoleService,
+    RoleRepository,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
