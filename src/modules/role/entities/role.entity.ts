@@ -19,7 +19,9 @@ export class Role {
   @Column({ nullable: true })
   description: string;
 
-  @ManyToMany(() => Permission, (permission) => permission.roles)
+  @ManyToMany(() => Permission, (permission) => permission.roles, {
+    onDelete: 'CASCADE',
+  })
   permissions: Permission[];
 
   @OneToMany(() => User, (user) => user.role)

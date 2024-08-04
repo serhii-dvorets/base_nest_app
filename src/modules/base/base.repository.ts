@@ -34,4 +34,8 @@ export class BaseRepository<T> {
   async delete(id: number): Promise<void> {
     await this.repository.delete(id);
   }
+
+  async save(data: DeepPartial<T>): Promise<void> {
+    await this.repository.save(data);
+  }
 }

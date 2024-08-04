@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { PermissionEnum } from 'src/modules/permission/enums/permission.enum';
+import { RoleEnum } from '../enums/role.enum';
 
 @Injectable()
 export class SeedService {
@@ -58,17 +59,17 @@ export class SeedService {
 
     const initialRoles = [
       {
-        name: 'superadmin',
+        name: RoleEnum.SuperAdmin,
         description: 'Super admin role',
         permissions: allPermissions,
       },
       {
-        name: 'admin',
+        name: RoleEnum.Admin,
         description: 'Admin role',
         permissions: adminPermissions,
       },
       {
-        name: 'user',
+        name: RoleEnum.User,
         description: 'User role',
         permissions: userPermissions,
       },
@@ -91,13 +92,14 @@ export class SeedService {
         await this.roleService.create({
           name: roleData.name,
           description: roleData.description,
-          permissions: permissions || [],
+          permissionIds:
+            permissions.map((permission) => String(permission.id)) || [],
         });
       }
     }
 
     const superadminRole = await this.roleService.findOne({
-      where: { name: 'superadmin' },
+      where: { name: RoleEnum.SuperAdmin },
     });
 
     if (superadminRole) {

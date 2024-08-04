@@ -7,4 +7,6 @@ export enum PermissionEnum {
   UpdateUser = 'update_user',
   ViewProduct = 'view_product',
   UpdateProduct = 'update_product',
+  ViewReport = 'view_report',
+  UpdateReport = 'update_report',
 }

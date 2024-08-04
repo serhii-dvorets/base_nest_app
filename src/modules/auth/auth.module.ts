@@ -10,9 +10,11 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 import { RoleService } from '../role/role.service';
 import { RoleRepository } from '../role/repositories/role.repository';
 import { Role } from '../role/entities/role.entity';
+import { PermissionRepository } from '../permission/repositories/permission.repository';
+import { Permission } from '../permission/entities/permission.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Role])],
+  imports: [TypeOrmModule.forFeature([User, Role, Permission])],
   controllers: [AuthController],
   providers: [
     AuthService,
@@ -20,6 +22,7 @@ import { Role } from '../role/entities/role.entity';
     UserRepository,
     RoleService,
     RoleRepository,
+    PermissionRepository,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

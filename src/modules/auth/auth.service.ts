@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { scryptSync } from 'crypto';
 import { LogInDto } from './dto/log-in.dto';
 import { RoleService } from '../role/role.service';
+import { RoleEnum } from '../role/enums/role.enum';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,7 @@ export class AuthService {
     const hashPassword = this.hashPassword(data.password);
 
     const userRole = await this.roleService.findOne({
-      where: { name: 'user' },
+      where: { name: RoleEnum.User },
     });
 
     const user = await this.userRepository.create({

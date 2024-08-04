@@ -1,5 +1,4 @@
-import { IsArray, IsNotEmpty, IsString } from 'class-validator';
-import { Permission } from 'src/modules/permission/entities/permission.entity';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateRoleDto {
   @IsString()
@@ -7,8 +6,9 @@ export class CreateRoleDto {
   name: string;
 
   @IsString()
+  @IsOptional()
   description: string;
 
   @IsArray()
-  permissions: Permission[];
+  permissionIds: string[] | [];
 }
