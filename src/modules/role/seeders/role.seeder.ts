@@ -8,6 +8,7 @@ import { AuthService } from 'src/modules/auth/auth.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Repository } from 'typeorm';
+import { PermissionEnum } from 'src/modules/permission/enums/permission.enum';
 
 @Injectable()
 export class SeedService {
@@ -22,24 +23,28 @@ export class SeedService {
   ) {}
   async seed() {
     const allPermissions = [
-      'view_permissions',
-      'update_permissions',
-      'view_role',
-      'update_role',
-      'view_user',
-      'update_user',
-      'view_product',
-      'update_product',
+      PermissionEnum.ViewPermission,
+      PermissionEnum.UpdatePermission,
+      PermissionEnum.ViewRole,
+      PermissionEnum.UpdateRole,
+      PermissionEnum.ViewUser,
+      PermissionEnum.UpdateUser,
+      PermissionEnum.ViewProduct,
+      PermissionEnum.UpdateProduct,
     ];
 
     const adminPermissions = [
-      'view_user',
-      'update_user',
-      'view_product',
-      'update_product',
+      PermissionEnum.ViewUser,
+      PermissionEnum.UpdateUser,
+      PermissionEnum.ViewProduct,
+      PermissionEnum.UpdateProduct,
     ];
 
-    const userPermissions = ['view_product'];
+    const userPermissions = [
+      PermissionEnum.ViewUser,
+      PermissionEnum.UpdateUser,
+      PermissionEnum.ViewProduct,
+    ];
 
     for (const name of allPermissions) {
       const permission = await this.permissionService.findOne({
