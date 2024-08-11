@@ -12,9 +12,12 @@ import { RoleRepository } from '../role/repositories/role.repository';
 import { Role } from '../role/entities/role.entity';
 import { PermissionRepository } from '../permission/repositories/permission.repository';
 import { Permission } from '../permission/entities/permission.entity';
+import { ActionRepository } from '../action/repositories/action.repository';
+import { Action } from '../action/entities/action.entity';
+import { EmailService } from 'src/infrastructure/mailer/email.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Role, Permission])],
+  imports: [TypeOrmModule.forFeature([User, Role, Permission, Action])],
   controllers: [AuthController],
   providers: [
     AuthService,
@@ -23,6 +26,8 @@ import { Permission } from '../permission/entities/permission.entity';
     RoleService,
     RoleRepository,
     PermissionRepository,
+    ActionRepository,
+    EmailService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

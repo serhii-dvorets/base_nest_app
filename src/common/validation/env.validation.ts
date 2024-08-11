@@ -62,6 +62,24 @@ class EnvironmentVariables {
 
   @IsString()
   SUPERADMIN_PASSWORD: string;
+
+  @IsString()
+  MAIL_HOST: string;
+
+  @IsNumber()
+  MAIL_PORT: number;
+
+  @IsString()
+  MAIL_AUTH_USER: string;
+
+  @IsString()
+  MAIL_AUTH_PASS: string;
+
+  @IsString()
+  MAIL_FROM: string;
+
+  @IsString()
+  MAIN_URL: string;
 }
 
 export function validateConfig(configuration: Record<string, unknown>) {

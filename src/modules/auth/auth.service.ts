@@ -7,6 +7,9 @@ import { scryptSync } from 'crypto';
 import { LogInDto } from './dto/log-in.dto';
 import { RoleService } from '../role/role.service';
 import { RoleEnum } from '../role/enums/role.enum';
+import { ActionRepository } from '../action/repositories/action.repository';
+import { ActionTypeEnum } from '../action/entities/action.entity';
+import { EmailService } from 'src/infrastructure/mailer/email.service';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +17,8 @@ export class AuthService {
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
     private readonly roleService: RoleService,
+    private readonly actionRepository: ActionRepository,
+    private readonly emailService: EmailService,
   ) {}
   async signIn(
     session: Record<string, any>,
@@ -29,6 +34,20 @@ export class AuthService {
       ...data,
       password: hashPassword,
       role: userRole,
+    });
+
+    const action = await this.actionRepository.create({
+      type: ActionTypeEnum.emailCofirmation,
+      user,
+    });
+
+    await this.emailService.send({
+      type: ActionTypeEnum.emailCofirmation,
+      mailTo: user.email,
+      data: {
+        actionId: action.id,
+        name: user.name,
+      },
     });
 
     session.user = { id: user.id };
@@ -79,5 +98,21 @@ export class AuthService {
 
   async logout(session: Record<string, any>) {
     return session.destroy();
+  }
+
+  async confirmEmail(actionId) {
+    const action = await this.actionRepository.findOne({
+      where: { id: actionId },
+      relations: ['user'],
+    });
+
+    if (!action) {
+      throw new BadRequestException('EMAIL_CONFIRMATION_ERROR');
+    }
+
+    action.user.confirmEmail();
+
+    await this.userRepository.save(action.user);
+    await this.actionRepository.delete(actionId);
   }
 }

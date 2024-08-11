@@ -117,6 +117,7 @@ export class SeedService {
           email,
           password: hash,
           role: superadminRole,
+          emailConfirmed: true,
         });
 
         return this.userRepository.save(superAdmin);

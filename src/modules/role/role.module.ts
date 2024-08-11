@@ -12,9 +12,12 @@ import { UserService } from '../user/user.service';
 import { AuthService } from '../auth/auth.service';
 import { PermissionRepository } from '../permission/repositories/permission.repository';
 import { UserRepository } from '../user/repositories/user.repository';
+import { ActionRepository } from '../action/repositories/action.repository';
+import { Action } from '../action/entities/action.entity';
+import { EmailService } from 'src/infrastructure/mailer/email.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Role, User, Permission])],
+  imports: [TypeOrmModule.forFeature([Role, User, Permission, Action])],
   controllers: [RoleController],
   providers: [
     RoleService,
@@ -25,6 +28,8 @@ import { UserRepository } from '../user/repositories/user.repository';
     AuthService,
     PermissionRepository,
     UserRepository,
+    ActionRepository,
+    EmailService,
   ],
 })
 export class RoleModule implements OnModuleInit {

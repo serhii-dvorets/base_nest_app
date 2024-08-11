@@ -22,6 +22,13 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ nullable: false, default: false })
+  emailConfirmed: boolean;
+
   @ManyToOne(() => Role, (role) => role.users)
   role: Role;
+
+  confirmEmail() {
+    this.emailConfirmed = true;
+  }
 }

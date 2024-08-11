@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Session, Get } from '@nestjs/common';
+import { Controller, Post, Body, Session, Get, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { LogInDto } from './dto/log-in.dto';
@@ -26,5 +26,11 @@ export class AuthController {
   @Get('logout')
   logout(@Session() session: Record<string, any>) {
     return this.authService.logout(session);
+  }
+
+  @Public()
+  @Get('confirm-email/:actionId')
+  confirmEmail(@Param('actionId') actionId: string) {
+    return this.authService.confirmEmail(actionId);
   }
 }
