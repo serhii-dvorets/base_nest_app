@@ -14,7 +14,7 @@ import { PermissionRepository } from '../permission/repositories/permission.repo
 import { UserRepository } from '../user/repositories/user.repository';
 import { ActionRepository } from '../action/repositories/action.repository';
 import { Action } from '../action/entities/action.entity';
-import { EmailService } from 'src/infrastructure/mailer/email.service';
+import { EmailService } from '../../infrastructure/mailer/email.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Role, User, Permission, Action])],

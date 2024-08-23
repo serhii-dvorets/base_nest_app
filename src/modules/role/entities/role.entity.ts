@@ -1,5 +1,5 @@
-import { Permission } from 'src/modules/permission/entities/permission.entity';
-import { User } from 'src/modules/user/entities/user.entity';
+import { Permission } from '../../permission/entities/permission.entity';
+import { User } from '../../user/entities/user.entity';
 import {
   Column,
   Entity,

@@ -9,7 +9,7 @@ import { RoleService } from '../role/role.service';
 import { RoleEnum } from '../role/enums/role.enum';
 import { ActionRepository } from '../action/repositories/action.repository';
 import { ActionTypeEnum } from '../action/entities/action.entity';
-import { EmailService } from 'src/infrastructure/mailer/email.service';
+import { EmailService } from '../../infrastructure/mailer/email.service';
 
 @Injectable()
 export class AuthService {

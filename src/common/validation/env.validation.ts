@@ -11,6 +11,7 @@ import {
 enum Environment {
   Development = 'dev',
   Production = 'prod',
+  Test = 'test',
 }
 
 class EnvironmentVariables {
@@ -38,6 +39,23 @@ class EnvironmentVariables {
 
   @IsString()
   DB_DATABASE: string;
+
+  @IsString()
+  TEST_DB_HOST: string;
+
+  @IsNumber()
+  @Min(0)
+  @Max(65535)
+  TEST_DB_PORT: number;
+
+  @IsString()
+  TEST_DB_USERNAME: string;
+
+  @IsString()
+  TEST_DB_PASSWORD: string;
+
+  @IsString()
+  TEST_DB_DATABASE: string;
 
   @IsString()
   PROJECT_NAME: string;

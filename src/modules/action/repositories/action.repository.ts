@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from 'src/modules/base/base.repository';
+import { BaseRepository } from '../../base/base.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Action } from '../entities/action.entity';

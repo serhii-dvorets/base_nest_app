@@ -6,7 +6,7 @@ import { User } from '../user/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { UserRepository } from '../user/repositories/user.repository';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from 'src/common/guards/auth.guard';
+import { AuthGuard } from '../../common/guards/auth.guard';
 import { RoleService } from '../role/role.service';
 import { RoleRepository } from '../role/repositories/role.repository';
 import { Role } from '../role/entities/role.entity';
@@ -14,7 +14,7 @@ import { PermissionRepository } from '../permission/repositories/permission.repo
 import { Permission } from '../permission/entities/permission.entity';
 import { ActionRepository } from '../action/repositories/action.repository';
 import { Action } from '../action/entities/action.entity';
-import { EmailService } from 'src/infrastructure/mailer/email.service';
+import { EmailService } from '../../infrastructure/mailer/email.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Role, Permission, Action])],

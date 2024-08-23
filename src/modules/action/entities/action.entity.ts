@@ -1,4 +1,4 @@
-import { User } from 'src/modules/user/entities/user.entity';
+import { User } from '../../user/entities/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum ActionTypeEnum {

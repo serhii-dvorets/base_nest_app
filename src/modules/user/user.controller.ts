@@ -10,7 +10,7 @@ import {
 import { UserService } from './user.service';
 import { ChangeRoleDto } from './dto/change-role.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Permissions } from 'src/common/decorators/permission.decorator';
+import { Permissions } from '../../common/decorators/permission.decorator';
 import { PermissionEnum } from '../permission/enums/permission.enum';
 
 @Controller('user')

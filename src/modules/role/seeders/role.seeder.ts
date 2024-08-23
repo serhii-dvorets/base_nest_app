@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { PermissionService } from 'src/modules/permission/permission.service';
+import { PermissionService } from '../../permission/permission.service';
 import { RoleService } from '../role.service';
-import { Permission } from 'src/modules/permission/entities/permission.entity';
+import { Permission } from '../../permission/entities/permission.entity';
 import { ConfigService } from '@nestjs/config';
-import { UserService } from 'src/modules/user/user.service';
-import { AuthService } from 'src/modules/auth/auth.service';
+import { UserService } from '../../user/user.service';
+import { AuthService } from '../../auth/auth.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/modules/user/entities/user.entity';
+import { User } from '../../user/entities/user.entity';
 import { Repository } from 'typeorm';
-import { PermissionEnum } from 'src/modules/permission/enums/permission.enum';
+import { PermissionEnum } from '../../permission/enums/permission.enum';
 import { RoleEnum } from '../enums/role.enum';
 
 @Injectable()

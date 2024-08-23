@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/modules/user/entities/user.entity';
+import { User } from '../../modules/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { IS_PUBLIC_KEY } from '../decorators/auth.decorator';
 

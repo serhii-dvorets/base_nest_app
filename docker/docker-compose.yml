@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   backend:
     build:
@@ -9,6 +7,8 @@ services:
     container_name: base_nest_be
     depends_on:
       database:
+        condition: service_healthy
+      test-database:
         condition: service_healthy
     ports: [ '8000:8000' ]
     env_file: ./env/.env.backend
@@ -31,3 +31,18 @@ services:
     volumes:
       - ~/docker-volumes/base_nest/db:/var/lib/mysql
     ports: [ '3306:3306' ]
+
+  test-database:
+    image: mysql:8.0.31
+    container_name: test-db
+    restart: unless-stopped
+    env_file: ./env/.env.test-database
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 72
+    command: --default-authentication-plugin=mysql_native_password --skip-log-bin --disable-log-bin
+    volumes:
+      - ~/docker-volumes/base_nest/test-db:/var/lib/mysql
+    ports: [ '3307:3307' ]
