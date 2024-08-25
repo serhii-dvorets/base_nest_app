@@ -6,8 +6,8 @@ export default registerAs('session', () => ({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    httpOnly: true,
-    secure: process.env.NODE_ENV !== 'dev',
+    httpOnly: !['dev', 'test'].includes(process.env.NODE_ENV),
+    secure: !['dev', 'test'].includes(process.env.NODE_ENV),
     sameSite: 'strict',
     maxAge: parseInt(process.env.SESSION_EXPIRES, 10),
   },

@@ -45,4 +45,4 @@ services:
     command: --default-authentication-plugin=mysql_native_password --skip-log-bin --disable-log-bin
     volumes:
       - ~/docker-volumes/base_nest/test-db:/var/lib/mysql
-    ports: [ '3307:3307' ]
+    ports: [ '3307:3306' ]
