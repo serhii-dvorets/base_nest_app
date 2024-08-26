@@ -1,11 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { RoleEnum } from 'src/modules/role/enums/role.enum';
 import { ConfigService } from '@nestjs/config';
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 import { getDataSourceToken } from '@nestjs/typeorm';
+import { EmailService } from '../src/infrastructure/mailer/email.service';
+import { ValidationExceptionFilter } from '../src/common/filters/validation.filter';
+import { getUserCreds } from './userCredentials';
 
 type MakeRequestParams = {
   method: 'get' | 'post' | 'patch' | 'delete';
@@ -22,13 +25,19 @@ class TestFactory {
   async init() {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(EmailService)
+      .useValue({ send: jest.fn() })
+      .compile();
 
     this.app = moduleFixture.createNestApplication();
     this.configService = moduleFixture.get<ConfigService>(ConfigService);
     this.dataSource = moduleFixture.get<DataSource>(getDataSourceToken());
+    this.app.useGlobalPipes(new ValidationPipe());
+    this.app.useGlobalFilters(new ValidationExceptionFilter());
 
     await this.app.init();
+    return moduleFixture;
   }
 
   async getSession(role: RoleEnum) {
@@ -41,6 +50,16 @@ class TestFactory {
         method: 'post',
         path: '/auth/login',
         payload: { email, password },
+      });
+
+      this.cookie = request.headers['set-cookie'];
+    }
+
+    if (role === RoleEnum.User) {
+      const request = await this.makeRequest({
+        method: 'post',
+        path: '/auth/login',
+        payload: getUserCreds(),
       });
 
       this.cookie = request.headers['set-cookie'];
