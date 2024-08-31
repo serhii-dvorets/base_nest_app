@@ -32,7 +32,10 @@ export class RoleController {
   @Get(':id')
   @Permissions(PermissionEnum.ViewRole)
   findOne(@Param('id') id: string) {
-    return this.roleService.findOne({ where: { id: +id } });
+    return this.roleService.findOne({
+      where: { id: +id },
+      relations: ['permissions'],
+    });
   }
 
   @Patch(':id')

@@ -1,7 +1,7 @@
 import TestFactory from '../TestFactory';
 import { RoleEnum } from 'src/modules/role/enums/role.enum';
 
-describe('PermissionController', () => {
+describe('RoleController', () => {
   let testFactory: TestFactory;
 
   beforeAll(async () => {
@@ -15,75 +15,101 @@ describe('PermissionController', () => {
     await testFactory.closeApp();
   });
 
-  it('Should get all permissions', async () => {
+  it('Should get all roles', async () => {
     const response = await testFactory.makeRequest({
       method: 'get',
-      path: '/permission',
+      path: '/role',
       payload: {},
     });
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual([
-      { id: 2, name: 'update_permissions' },
-      { id: 8, name: 'update_product' },
-      { id: 4, name: 'update_role' },
-      { id: 6, name: 'update_user' },
-      { id: 1, name: 'view_permissions' },
-      { id: 7, name: 'view_product' },
-      { id: 3, name: 'view_role' },
-      { id: 5, name: 'view_user' },
+      { id: 1, name: 'superadmin', description: 'Super admin role' },
+      { id: 2, name: 'admin', description: 'Admin role' },
+      { id: 3, name: 'user', description: 'User role' },
     ]);
   });
 
-  it('Should get one permission', async () => {
+  it('Should get one role', async () => {
     const response = await testFactory.makeRequest({
       method: 'get',
-      path: '/permission/2',
+      path: '/role/1',
       payload: {},
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({ id: 2, name: 'update_permissions' });
+    expect(response.body).toEqual({
+      id: 1,
+      name: 'superadmin',
+      description: 'Super admin role',
+      permissions: [
+        { id: 1, name: 'view_permissions' },
+        { id: 2, name: 'update_permissions' },
+        { id: 3, name: 'view_role' },
+        { id: 4, name: 'update_role' },
+        { id: 5, name: 'view_user' },
+        { id: 6, name: 'update_user' },
+        { id: 7, name: 'view_product' },
+        { id: 8, name: 'update_product' },
+      ],
+    });
   });
 
-  it('Should create new permission', async () => {
+  it('Should create new role', async () => {
     const response = await testFactory.makeRequest({
       method: 'post',
-      path: '/permission',
-      payload: { name: 'view_report' },
+      path: '/role',
+      payload: {
+        name: 'accountant',
+        description: 'Role for accountant',
+        permissionIds: [1, 2],
+      },
     });
 
     expect(response.statusCode).toBe(201);
-    expect(response.body).toEqual({ name: 'view_report', id: 9 });
+    expect(response.body).toEqual({
+      name: 'accountant',
+      description: 'Role for accountant',
+      id: 4,
+      permissions: [
+        { id: 1, name: 'view_permissions' },
+        { id: 2, name: 'update_permissions' },
+      ],
+    });
   });
 
-  it('Should update permission', async () => {
+  it('Should update role', async () => {
     await testFactory.makeRequest({
       method: 'patch',
-      path: '/permission/9',
-      payload: { name: 'update_report' },
+      path: '/role/4',
+      payload: { name: 'cfo', permissionIds: [1] },
     });
 
     const response = await testFactory.makeRequest({
       method: 'get',
-      path: '/permission/9',
+      path: '/role/4',
       payload: {},
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({ name: 'update_report', id: 9 });
+    expect(response.body).toEqual({
+      id: 4,
+      name: 'cfo',
+      description: 'Role for accountant',
+      permissions: [{ id: 1, name: 'view_permissions' }],
+    });
   });
 
-  it('Should delete permission', async () => {
+  it('Should delete role', async () => {
     await testFactory.makeRequest({
       method: 'delete',
-      path: '/permission/9',
+      path: '/role/4',
       payload: {},
     });
 
     const response = await testFactory.makeRequest({
       method: 'get',
-      path: '/permission/9',
+      path: '/role/4',
       payload: {},
     });
 
@@ -91,12 +117,12 @@ describe('PermissionController', () => {
     expect(response.body).toEqual({});
   });
 
-  it('Should protect the show all permissions endpoint with session requirement', async () => {
+  it('Should protect the show all role endpoint with session requirement', async () => {
     await testFactory.logout();
 
     const response = await testFactory.makeRequest({
       method: 'get',
-      path: '/permission',
+      path: '/role',
       payload: {},
     });
 
@@ -104,12 +130,12 @@ describe('PermissionController', () => {
     expect(response.body.message).toEqual('Forbidden resource');
   });
 
-  it('Shouldn protect the permissions update endpoint from users with user role', async () => {
+  it('Shouldn protect the role update endpoint from users with user role', async () => {
     await testFactory.getSession(RoleEnum.User);
 
     const response = await testFactory.makeRequest({
       method: 'patch',
-      path: '/permission/2',
+      path: '/role/2',
       payload: { name: 'updated_name' },
     });
 
