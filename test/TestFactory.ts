@@ -66,6 +66,14 @@ class TestFactory {
     }
   }
 
+  async logout() {
+    return await this.makeRequest({
+      method: 'get',
+      path: '/auth/logout',
+      payload: {},
+    });
+  }
+
   async clearAll() {
     const entities = await this.dataSource.entityMetadatas.map(
       (entity) => `${entity.tableName}`,

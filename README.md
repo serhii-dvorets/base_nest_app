@@ -16,3 +16,7 @@
 ## Generate migration file inside docker container
 
   docker exec -it base_nest_be env name=<migration file name> npm run migration:generate 
+
+## Testing
+1. To run all test suites: `npm run docker:test`,
+2. To run single test suite: `docker exec -it base_nest_be npm run test -- test/modules/<file_name>.spec.ts`
