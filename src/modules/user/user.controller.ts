@@ -26,13 +26,19 @@ export class UserController {
   @Get()
   @Permissions(PermissionEnum.ViewUser)
   findAll(params) {
-    return this.userService.findAll(params);
+    return this.userService.findAll({
+      ...params,
+      relations: ['role', 'role.permissions'],
+    });
   }
 
   @Get(':id')
   @Permissions(PermissionEnum.ViewUser)
   findOne(@Param('id') id: string) {
-    return this.userService.findOne({ where: { id: +id } });
+    return this.userService.findOne({
+      where: { id: +id },
+      relations: ['role', 'role.permissions'],
+    });
   }
 
   @Patch(':id')

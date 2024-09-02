@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { SignInDto } from './dto/sign-in.dto';
-import { User } from '../user/entities/user.entity';
 import { UserRepository } from '../user/repositories/user.repository';
 import { ConfigService } from '@nestjs/config';
 import { scryptSync } from 'crypto';
@@ -10,6 +9,7 @@ import { RoleEnum } from '../role/enums/role.enum';
 import { ActionRepository } from '../action/repositories/action.repository';
 import { ActionTypeEnum } from '../action/entities/action.entity';
 import { EmailService } from '../../infrastructure/mailer/email.service';
+import { showUserDto, ShowUserDto } from '../user/dto/show-ser.dto';
 
 @Injectable()
 export class AuthService {
@@ -23,11 +23,12 @@ export class AuthService {
   async signIn(
     session: Record<string, any>,
     data: SignInDto,
-  ): Promise<{ user: User }> {
+  ): Promise<ShowUserDto> {
     const hashPassword = this.hashPassword(data.password);
 
     const userRole = await this.roleService.findOne({
       where: { name: RoleEnum.User },
+      relations: ['permissions'],
     });
 
     const user = await this.userRepository.create({
@@ -51,7 +52,7 @@ export class AuthService {
     });
 
     session.user = { id: user.id };
-    return { user };
+    return showUserDto(user);
   }
 
   hashPassword(password: string): string {
@@ -67,9 +68,10 @@ export class AuthService {
   async login(
     session: Record<string, any>,
     data: LogInDto,
-  ): Promise<{ user: User } | string> {
+  ): Promise<ShowUserDto> {
     const user = await this.userRepository.findOne({
       where: { email: data.email },
+      relations: ['role', 'role.permissions'],
     });
 
     if (!user) {
@@ -87,7 +89,7 @@ export class AuthService {
 
     session.user = { id: user.id };
 
-    return { user };
+    return showUserDto(user);
   }
 
   async checkPassword(password: string, hash: string): Promise<boolean> {
